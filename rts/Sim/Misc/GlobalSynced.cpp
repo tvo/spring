@@ -42,7 +42,6 @@ CR_REG_METADATA(CGlobalSynced, (
 	CR_MEMBER(pwr2mapy),
 	CR_MEMBER(tempNum),
 	CR_MEMBER(godMode),
-	CR_MEMBER(globalLOS),
 	CR_MEMBER(cheatEnabled),
 	CR_MEMBER(noHelperAIs),
 	CR_MEMBER(editDefsEnabled),
@@ -67,7 +66,6 @@ CGlobalSynced::CGlobalSynced()
 	userSpeedFactor = 1;
 	paused = false;
 	godMode = false;
-	globalLOS = false;
 	cheatEnabled = false;
 	noHelperAIs = false;
 	editDefsEnabled = false;

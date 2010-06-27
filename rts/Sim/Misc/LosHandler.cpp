@@ -37,12 +37,14 @@ CLosHandler::CLosHandler(int numAllyTeams, int losMipLevel, int airMipLevel) :
 	airDiv(SQUARE_SIZE * (1 << airMipLevel)),
 	invLosDiv(1.0f / losDiv),
 	invAirDiv(1.0f / airDiv),
-	airSizeX(std::max(1, gs->mapx >> airMipLevel)),
-	airSizeY(std::max(1, gs->mapy >> airMipLevel)),
-	losSizeX(std::max(1, gs->mapx >> losMipLevel)),
-	losSizeY(std::max(1, gs->mapy >> losMipLevel)),
+	airSizeX(std::max(1, readmap->width  >> airMipLevel)),
+	airSizeY(std::max(1, readmap->height >> airMipLevel)),
+	losSizeX(std::max(1, readmap->width  >> losMipLevel)),
+	losSizeY(std::max(1, readmap->height >> losMipLevel)),
 	requireSonarUnderWater(false),
-	losAlgo(int2(losSizeX, losSizeY), -1e6f, 15, readmap->mipHeightmap[losMipLevel])
+	globalLOS(false),
+	losAlgo(int2(losSizeX, losSizeY), -1e6f, 15, readmap->mipHeightmap[losMipLevel]),
+	frameNum(0)
 {
 	for (int a = 0; a < numAllyTeams; ++a) {
 		losMap[a].SetSize(losSizeX, losSizeY);
@@ -71,13 +73,19 @@ void CLosHandler::SetRequireSonarUnderWater(bool enabled)
 }
 
 
+void CLosHandler::SetGlobalLOS(bool enabled)
+{
+	globalLOS = enabled;
+}
+
+
 void CLosHandler::MoveUnit(CUnit *unit, bool redoCurrent)
 {
 	SCOPED_TIMER("Los");
 	const float3& losPos = unit->pos;
 
 	const int allyteam = unit->allyteam;
-	unit->lastLosUpdate = gs->frameNum;
+	unit->lastLosUpdate = frameNum;
 
 	if (unit->losRadius <= 0) {
 		return;
@@ -207,7 +215,9 @@ void CLosHandler::CleanupInstance(LosInstance* instance)
 
 void CLosHandler::Update(void)
 {
-	while(!delayQue.empty() && delayQue.front().timeoutTime<gs->frameNum){
+	++frameNum;
+
+	while(!delayQue.empty() && delayQue.front().timeoutTime<frameNum){
 		FreeInstance(delayQue.front().instance);
 		delayQue.pop_front();
 	}
@@ -218,7 +228,7 @@ void CLosHandler::DelayedFreeInstance(LosInstance* instance)
 {
 	DelayedInstance di;
 	di.instance=instance;
-	di.timeoutTime=gs->frameNum+45;
+	di.timeoutTime=frameNum+45;
 
 	delayQue.push_back(di);
 }

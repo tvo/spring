@@ -2414,8 +2414,10 @@ void CGame::ActionReceived(const Action& action, int playernum)
 		if (!gs->cheatEnabled) {
 			logOutput.Print("globallos requires /cheat");
 		} else {
-			SetBoolArg(gs->globalLOS, action.extra);
-			if (gs->globalLOS) {
+			bool globalLOS = loshandler->GetGlobalLOS();
+			SetBoolArg(globalLOS, action.extra);
+			loshandler->SetGlobalLOS(globalLOS);
+			if (globalLOS) {
 				logOutput.Print("Global LOS Enabled");
 			} else {
 				logOutput.Print("Global LOS Disabled");

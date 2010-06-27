@@ -136,13 +136,6 @@ public:
 	bool godMode;
 
 	/**
-	* @brief global line-of-sight
-	*
-	* Whether everything on the map is visible at all times
-	*/
-	bool globalLOS;
-
-	/**
 	* @brief cheat enabled
 	*
 	* Whether cheating is enabled

@@ -52,7 +52,7 @@ public:
 	void FreeInstance(LosInstance* instance);
 
 	inline bool InLos(const CWorldObject* object, int allyTeam) {
-		if (object->alwaysVisible || gs->globalLOS) {
+		if (object->alwaysVisible || globalLOS) {
 			return true;
 		}
 		else if (object->useAirLos) {
@@ -72,7 +72,7 @@ public:
 		//       1. they can be cloaked
 		//       2. when underwater, they only get LOS if they also have sonar
 		//          (when the requireSonarUnderWater variable is enabled)
-		if (unit->alwaysVisible || gs->globalLOS) {
+		if (unit->alwaysVisible || globalLOS) {
 			return true;
 		}
 		else if (unit->isCloaked) {
@@ -95,7 +95,7 @@ public:
 	}
 
 	inline bool InLos(float3 pos, int allyTeam) {
-		if (gs->globalLOS) {
+		if (globalLOS) {
 			return true;
 		}
 		const int gx = (int)(pos.x * invLosDiv);
@@ -104,7 +104,7 @@ public:
 	}
 
 	inline bool InAirLos(float3 pos, int allyTeam) {
-		if (gs->globalLOS) {
+		if (globalLOS) {
 			return true;
 		}
 		const int gx = (int)(pos.x * invAirDiv);
@@ -116,6 +116,14 @@ public:
 	~CLosHandler();
 
 	void SetRequireSonarUnderWater(bool enabled);
+
+	/**
+	* @brief global line-of-sight
+	*
+	* Whether everything on the map is visible at all times
+	*/
+	bool GetGlobalLOS() const { return globalLOS; }
+	void SetGlobalLOS(bool enabled);
 
 	std::vector<CLosMap> losMap;
 	std::vector<CLosMap> airLosMap;
@@ -138,6 +146,7 @@ private:
 	void CleanupInstance(LosInstance* instance);
 
 	bool requireSonarUnderWater;
+	bool globalLOS;
 
 	CLosAlgorithm losAlgo;
 
@@ -152,6 +161,8 @@ private:
 	};
 
 	std::deque<DelayedInstance> delayQue;
+
+	int frameNum;
 
 public:
 	void Update(void);
