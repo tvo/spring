@@ -8,9 +8,7 @@
 #include <deque>
 #include <boost/noncopyable.hpp>
 
-#ifdef UNITTEST
-# include "Test/LosHandlerMockObjects.h"
-#else
+#ifndef UNITTEST
 # include "Sim/Misc/RadarHandler.h"
 #endif
 

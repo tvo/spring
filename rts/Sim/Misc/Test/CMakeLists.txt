@@ -16,7 +16,7 @@ INCLUDE_DIRECTORIES(../../../System)
 
 set(test_files
 	LosHandlerMockObjects.cpp
-	../LosHandler.cpp
+	LosHandlerTest.cpp
 	../LosMap.cpp
 	)
 
