@@ -9,9 +9,7 @@
 
 #include "LosHandler.h"
 
-#include "ModInfo.h"
 #include "Sim/Units/Unit.h"
-#include "Sim/Misc/TeamHandler.h"
 #include "Map/ReadMap.h"
 #include "TimeProfiler.h"
 #include "LogOutput.h"
@@ -29,12 +27,12 @@ using std::max;
 CLosHandler* loshandler;
 
 
-CLosHandler::CLosHandler() :
-	losMap(teamHandler->ActiveAllyTeams()),
-	airLosMap(teamHandler->ActiveAllyTeams()),
+CLosHandler::CLosHandler(int numAllyTeams, int losMipLevel, int airMipLevel) :
+	losMap(numAllyTeams),
+	airLosMap(numAllyTeams),
 	//airAlgo(int2(airSizeX, airSizeY), -1e6f, 15, readmap->mipHeightmap[airMipLevel]),
-	losMipLevel(modInfo.losMipLevel),
-	airMipLevel(modInfo.airMipLevel),
+	losMipLevel(losMipLevel),
+	airMipLevel(airMipLevel),
 	losDiv(SQUARE_SIZE * (1 << losMipLevel)),
 	airDiv(SQUARE_SIZE * (1 << airMipLevel)),
 	invLosDiv(1.0f / losDiv),
@@ -43,10 +41,10 @@ CLosHandler::CLosHandler() :
 	airSizeY(std::max(1, gs->mapy >> airMipLevel)),
 	losSizeX(std::max(1, gs->mapx >> losMipLevel)),
 	losSizeY(std::max(1, gs->mapy >> losMipLevel)),
-	requireSonarUnderWater(modInfo.requireSonarUnderWater),
+	requireSonarUnderWater(false),
 	losAlgo(int2(losSizeX, losSizeY), -1e6f, 15, readmap->mipHeightmap[losMipLevel])
 {
-	for (int a = 0; a < teamHandler->ActiveAllyTeams(); ++a) {
+	for (int a = 0; a < numAllyTeams; ++a) {
 		losMap[a].SetSize(losSizeX, losSizeY);
 		airLosMap[a].SetSize(airSizeX, airSizeY);
 	}
@@ -64,6 +62,12 @@ CLosHandler::~CLosHandler()
 		}
 	}
 
+}
+
+
+void CLosHandler::SetRequireSonarUnderWater(bool enabled)
+{
+	requireSonarUnderWater = enabled;
 }
 
 
@@ -128,7 +132,7 @@ void CLosHandler::MoveUnit(CUnit *unit, bool redoCurrent)
 void CLosHandler::LosAdd(LosInstance* instance)
 {
 	assert(instance);
-	assert(instance->allyteam < teamHandler->ActiveAllyTeams());
+	assert(instance->allyteam < losMap.size());
 	assert(instance->allyteam >= 0);
 
 	losAlgo.LosAdd(instance->basePos, instance->losSize, instance->baseHeight, instance->losSquares);

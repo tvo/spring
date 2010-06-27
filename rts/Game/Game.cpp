@@ -505,7 +505,8 @@ void CGame::LoadSimulation(const std::string& mapname)
 	featureHandler->LoadFeaturesFromMap(saveFile != NULL);
 
 	mapDamage = IMapDamage::GetMapDamage();
-	loshandler = new CLosHandler();
+	loshandler = new CLosHandler(teamHandler->ActiveAllyTeams(), modInfo.losMipLevel, modInfo.airMipLevel);
+	loshandler->SetRequireSonarUnderWater(modInfo.requireSonarUnderWater);
 	radarhandler = new CRadarHandler(false);
 
 	pathManager = new CPathManager();

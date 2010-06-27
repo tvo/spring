@@ -112,8 +112,10 @@ public:
 		return !!airLosMap[allyTeam].At(gx, gz);
 	}
 
-	CLosHandler();
+	CLosHandler(int numAllyTeams, int losMipLevel, int airMipLevel);
 	~CLosHandler();
+
+	void SetRequireSonarUnderWater(bool enabled);
 
 	std::vector<CLosMap> losMap;
 	std::vector<CLosMap> airLosMap;
@@ -129,13 +131,13 @@ public:
 	const int losSizeX;
 	const int losSizeY;
 
-	const bool requireSonarUnderWater;
-
 private:
 	void LosAdd(LosInstance* instance);
 	int GetHashNum(CUnit* unit);
 	void AllocInstance(LosInstance* instance);
 	void CleanupInstance(LosInstance* instance);
+
+	bool requireSonarUnderWater;
 
 	CLosAlgorithm losAlgo;
 
