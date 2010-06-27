@@ -2,6 +2,7 @@
 
 #include "StdAfx.h"
 #include "GroundMoveMath.h"
+#include "Map/Ground.h"
 #include "Map/ReadMap.h"
 #include "Sim/Objects/SolidObject.h"
 #include "Sim/Features/Feature.h"

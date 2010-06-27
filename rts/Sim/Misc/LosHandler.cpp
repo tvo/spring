@@ -9,11 +9,10 @@
 
 #include "LosHandler.h"
 
-#include "Sim/Units/Unit.h"
+#include "MemPool.h"
 #include "Map/ReadMap.h"
 #include "TimeProfiler.h"
 #include "LogOutput.h"
-#include "Platform/errorhandler.h"
 
 using std::min;
 using std::max;
