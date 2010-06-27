@@ -10,10 +10,10 @@
 #include "LosHandler.h"
 
 #include "MemPool.h"
-#include "TimeProfiler.h"
-#include "LogOutput.h"
 
 #ifndef UNITTEST
+# include "TimeProfiler.h"
+# include "LogOutput.h"
 # include "Map/ReadMap.h"
 #endif
 
