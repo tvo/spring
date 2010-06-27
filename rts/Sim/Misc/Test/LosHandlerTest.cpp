@@ -9,8 +9,56 @@
 #include "LosHandlerMockObjects.h"
 #include "Sim/Misc/LosHandler.cpp"
 
-// quick test of cmake
-int main()
+#define BOOST_TEST_MODULE(loshandler)
+#include <boost/test/included/unit_test.hpp>
+
+
+namespace {
+struct Fixture
 {
-	return 0;
+	static const int numAllyTeams = 2;
+	static const int losMipLevel = 1;
+	static const int airMipLevel = 2;
+
+	// make the map the minimum size where no mipmap has empty area
+	static const int mapWidth = 1 << CMockReadMap::numHeightMipMaps;
+	static const int mapHeight = mapWidth;
+
+	/// Setup
+	Fixture()
+	{
+		// This are all globals. Ugh.
+		radarhandler = new CMockRadarHandler();
+		readmap = new CMockReadMap(mapWidth, mapHeight);
+		loshandler = new CLosHandler(numAllyTeams, losMipLevel, airMipLevel);
+	}
+
+	/// Teardown
+	~Fixture()
+	{
+		delete loshandler;
+		delete readmap;
+		delete radarhandler;
+	}
+};
+}
+
+
+BOOST_FIXTURE_TEST_CASE(test_Update, Fixture)
+{
+	// Mostly tests that all (mock) objects have been initialised properly.
+	loshandler->Update();
+}
+
+
+BOOST_FIXTURE_TEST_CASE(test_MoveUnit_InBounds, Fixture)
+{
+	CUnit u;
+	u.losRadius = 10;
+	// etc
+}
+
+
+BOOST_FIXTURE_TEST_CASE(test_MoveUnit_OutOfBounds, Fixture)
+{
 }
