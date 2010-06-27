@@ -2293,7 +2293,6 @@ CR_REG_METADATA(CUnit, (
 	CR_MEMBER(armorType),
 	CR_MEMBER(category),
 	CR_MEMBER(quads),
-	CR_MEMBER(los),
 	CR_MEMBER(tempNum),
 	CR_MEMBER(lastSlowUpdate),
 	CR_MEMBER(mapSquare),

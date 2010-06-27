@@ -16,56 +16,9 @@
 #include "TimeProfiler.h"
 #include "LogOutput.h"
 #include "Platform/errorhandler.h"
-#include "creg/STL_Deque.h"
-#include "creg/STL_List.h"
 
 using std::min;
 using std::max;
-
-CR_BIND(LosInstance, );
-CR_BIND(CLosHandler, );
-CR_BIND(CLosHandler::DelayedInstance, );
-
-CR_REG_METADATA(LosInstance,(
-//		CR_MEMBER(losSquares),
-		CR_MEMBER(losSize),
-		CR_MEMBER(airLosSize),
-		CR_MEMBER(refCount),
-		CR_MEMBER(allyteam),
-		CR_MEMBER(basePos),
-		CR_MEMBER(baseSquare),
-		CR_MEMBER(baseAirPos),
-		CR_MEMBER(hashNum),
-		CR_MEMBER(baseHeight),
-		CR_MEMBER(toBeDeleted),
-		CR_RESERVED(16)
-		));
-
-void CLosHandler::PostLoad()
-{
-	for (int a = 0; a < 2309; ++a)
-		for (std::list<LosInstance*>::iterator li = instanceHash[a].begin(); li != instanceHash[a].end(); ++li)
-			if ((*li)->refCount) {
-				LosAdd(*li);
-			}
-}
-
-CR_REG_METADATA(CLosHandler,(
-		CR_MEMBER(instanceHash),
-		CR_MEMBER(toBeDeleted),
-		CR_MEMBER(delayQue),
-		CR_RESERVED(8),
-		CR_POSTLOAD(PostLoad)
-		));
-
-CR_REG_METADATA_SUB(CLosHandler,DelayedInstance,(
-		CR_MEMBER(instance),
-		CR_MEMBER(timeoutTime)));
-/*
-CR_REG_METADATA_SUB(CLosHandler,CPoint,(
-		CR_MEMBER(x),
-		CR_MEMBER(y)));
-*/
 
 
 //////////////////////////////////////////////////////////////////////

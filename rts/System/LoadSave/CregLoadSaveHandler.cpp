@@ -87,7 +87,6 @@ void CGameStateCollector::Serialize(creg::ISerializer& s)
 	s.SerializeObjectInstance(readmap, readmap->GetClass());
 	s.SerializeObjectInstance(qf, qf->GetClass());
 	s.SerializeObjectInstance(featureHandler, featureHandler->GetClass());
-	s.SerializeObjectInstance(loshandler, loshandler->GetClass());
 	s.SerializeObjectInstance(radarhandler, radarhandler->GetClass());
 	s.SerializeObjectInstance(airBaseHandler, airBaseHandler->GetClass());
 	s.SerializeObjectInstance(&interceptHandler, interceptHandler.GetClass());

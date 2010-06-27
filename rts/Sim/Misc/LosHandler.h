@@ -17,9 +17,7 @@
 
 struct LosInstance : public boost::noncopyable
 {
-	CR_DECLARE_STRUCT(LosInstance);
  	std::vector<int> losSquares;
-	LosInstance() {} // default constructor for creg
 	LosInstance(int lossize, int airLosSize, int allyteam, int2 basePos,
 	            int baseSquare, int2 baseAirPos, int hashNum, float baseHeight)
 		: losSize(lossize),
@@ -42,15 +40,13 @@ struct LosInstance : public boost::noncopyable
 	int hashNum;
 	float baseHeight;
 	bool toBeDeleted;
+
+	void _DestructInstance(LosInstance*) { this->~LosInstance(); }
 };
 
 
 class CLosHandler : public boost::noncopyable
 {
-	CR_DECLARE(CLosHandler);
-//	CR_DECLARE_SUB(CPoint);
-	CR_DECLARE_SUB(DelayedInstance);
-
 public:
 	void MoveUnit(CUnit* unit, bool redoCurrent);
 	void FreeInstance(LosInstance* instance);
@@ -136,7 +132,6 @@ public:
 	const bool requireSonarUnderWater;
 
 private:
-	void PostLoad();
 	void LosAdd(LosInstance* instance);
 	int GetHashNum(CUnit* unit);
 	void AllocInstance(LosInstance* instance);
