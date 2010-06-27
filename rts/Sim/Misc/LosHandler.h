@@ -7,7 +7,12 @@
 #include <list>
 #include <deque>
 #include <boost/noncopyable.hpp>
-#include "Sim/Misc/RadarHandler.h"
+
+#ifdef UNITTEST
+# include "Test/LosHandlerMockObjects.h"
+#else
+# include "Sim/Misc/RadarHandler.h"
+#endif
 
 
 struct LosInstance : public boost::noncopyable

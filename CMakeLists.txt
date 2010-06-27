@@ -215,3 +215,5 @@ Add_Subdirectory(doc)
 ### - Install mingw DLLs
 Add_Subdirectory(cont)
 
+# unit tests
+Add_Subdirectory(rts/Sim/Misc/Test)

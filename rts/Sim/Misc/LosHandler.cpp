@@ -10,9 +10,12 @@
 #include "LosHandler.h"
 
 #include "MemPool.h"
-#include "Map/ReadMap.h"
 #include "TimeProfiler.h"
 #include "LogOutput.h"
+
+#ifndef UNITTEST
+# include "Map/ReadMap.h"
+#endif
 
 using std::min;
 using std::max;
