@@ -8,7 +8,6 @@
 #ifndef LOSHANDLERMOCKOBJECTS_H_
 #define LOSHANDLERMOCKOBJECTS_H_
 
-#include <cstring>
 #include "float3.h"
 
 // Forward declaration
@@ -80,15 +79,11 @@ public:
 class CMockReadMap
 {
 public:
-	CMockReadMap() :
-		width(0),
-		height(0)
-	{
-		std::memset(mipHeightmap, 0, sizeof(mipHeightmap));
-	}
+	CMockReadMap(int w, int h);
+	~CMockReadMap();
 
-	int width;
-	int height;
+	const int width;
+	const int height;
 
     static const int numHeightMipMaps = 7; //! number of heightmap mipmaps, including full resolution
     float* mipHeightmap[numHeightMipMaps]; //! array of pointers to heightmap in different resolutions, mipHeightmap[0] is full resolution, mipHeightmap[n+1] is half resolution of mipHeightmap[n]
